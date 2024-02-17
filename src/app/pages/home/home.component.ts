@@ -8,19 +8,19 @@ import { Task } from './../../models/task.model';
   standalone: true,
   imports: [CommonModule],
   templateUrl: './home.component.html',
-  styleUrls: ['./home.component.css']
+  styleUrls: ['./home.component.css'],
 })
 export class HomeComponent {
   tasks = signal<Task[]>([
     {
       id: Date.now(),
       title: 'Crear proyecto',
-      completed: true
+      completed: true,
     },
     {
       id: Date.now(),
       title: 'Crear componenentes',
-      completed: false
+      completed: false,
     },
   ]);
 
@@ -36,16 +36,19 @@ export class HomeComponent {
       title,
       completed: false,
     };
-    this.tasks.update((tasks) => [...tasks, newTask]);
+    this.tasks.update((prevState) => [...prevState, newTask]);
   }
 
   deleteTask(index: number) {
-    this.tasks.update((tasks) => tasks.filter((task, position) => position !== index));
+    this.tasks.update((state) => {
+      return state.splice(index, 1);
+    });
   }
 
   updateTask(index: number) {
-    this.tasks.update((tasks) => {
-      return tasks.map((task, position) => {
+    /*
+    this.tasks.update(prevState => {
+      return prevState.map((task, position) => {
         if (position === index) {
           return {
             ...task,
@@ -54,6 +57,15 @@ export class HomeComponent {
         }
         return task;
       })
-    })
+    });
+    */
+    this.tasks.update((state) => {
+      const currentTask = state[index];
+      state[index] = {
+        ...currentTask,
+        completed: !currentTask.completed,
+      };
+      return state;
+    });
   }
 }

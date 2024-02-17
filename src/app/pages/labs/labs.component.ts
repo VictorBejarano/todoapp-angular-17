@@ -14,18 +14,18 @@ export class LabsComponent {
     'Instalar Angular CLI',
     'Crear proyecto',
     'Crear componente',
-    'Crear  servicio',
+    'Crear servicio',
   ]);
   name = signal('Nicolas');
   age = 18;
   disabled = true;
   img = 'https://w3schools.com/howto/img_avatar.png';
 
-  person = {
-    name: 'Nicolas',
-    age: 18,
+  person = signal({
+    name: 'nicolas',
+    age: 5,
     avatar: 'https://w3schools.com/howto/img_avatar.png'
-  }
+  });
 
   clickHandler() {
     alert('Hola')
@@ -40,5 +40,16 @@ export class LabsComponent {
   keydownHandler(event: KeyboardEvent){
     const input = event.target as HTMLInputElement;
     console.log(input.value);
+  }
+
+  changeAge(event: Event) {
+    const input = event.target as HTMLInputElement;
+    const newValue = input.value;
+    this.person.update(prevState => {
+      return {
+        ...prevState,
+        age: parseInt(newValue, 10)
+      }
+    });
   }
 }
