@@ -13,4 +13,12 @@ export class LabsComponent {
   tasks = ['Instalaer el angular CLI', 'Crear proyecto', 'Crear componentes'];
   name = 'Victor';
   age = 32;
+  disabled = true;
+  img = 'https://w3schools.com/howto/img_avatar.png';
+
+  person = {
+    name: 'Victor',
+    age: 18,
+    avatar: 'https://w3schools.com/howto/img_avatar.png',
+  };
 }
