@@ -1,12 +1,13 @@
 import { Component, signal } from '@angular/core';
 import { CommonModule } from '@angular/common';
+import { FormControl, ReactiveFormsModule, Validators } from '@angular/forms';
 
 @Component({
   selector: 'app-labs',
   standalone: true,
-  imports: [CommonModule],
+  imports: [CommonModule, ReactiveFormsModule],
   templateUrl: './labs.component.html',
-  styleUrls: ['./labs.component.css'],
+  styleUrls: ['./labs.component.css']
 })
 export class LabsComponent {
   welcome = 'Bienvenido a mi primera aplicación con Angular';
@@ -24,11 +25,29 @@ export class LabsComponent {
   person = signal({
     name: 'julian',
     age: 5,
-    avatar: 'https://w3schools.com/howto/img_avatar.png',
+    avatar: 'https://w3schools.com/howto/img_avatar.png'
   });
 
+  colorCtrl = new FormControl();
+  widthCtrl = new FormControl(50, {
+    nonNullable: true,
+  });
+  nameCtrl = new FormControl('nicolas', {
+    nonNullable: true,
+    validators: [
+      Validators.required,
+      Validators.minLength(3)
+    ]
+  });
+
+  constructor() {
+    this.colorCtrl.valueChanges.subscribe(value => {
+      console.log(value);
+    })
+  }
+
   clickHandler() {
-    alert('Hola');
+    alert('Hola')
   }
 
   changeHandler(event: Event) {
@@ -37,7 +56,7 @@ export class LabsComponent {
     this.name.set(newValue);
   }
 
-  keydownHandler(event: KeyboardEvent) {
+  keydownHandler(event: KeyboardEvent){
     const input = event.target as HTMLInputElement;
     console.log(input.value);
   }
@@ -45,22 +64,22 @@ export class LabsComponent {
   changeAge(event: Event) {
     const input = event.target as HTMLInputElement;
     const newValue = input.value;
-    this.person.update((prevState) => {
+    this.person.update(prevState => {
       return {
         ...prevState,
-        age: parseInt(newValue, 10),
-      };
+        age: parseInt(newValue, 10)
+      }
     });
   }
 
   changeName(event: Event) {
     const input = event.target as HTMLInputElement;
     const newValue = input.value;
-    this.person.update((prevState) => {
+    this.person.update(prevState => {
       return {
         ...prevState,
-        name: newValue,
-      };
+        name: newValue
+      }
     });
   }
 }
