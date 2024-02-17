@@ -1,11 +1,4 @@
-import {
-  Component,
-  Injector,
-  computed,
-  effect,
-  inject,
-  signal,
-} from '@angular/core';
+import { Component, Injector, computed, effect, inject, signal } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormControl, ReactiveFormsModule, Validators } from '@angular/forms';
 
@@ -16,26 +9,29 @@ import { Task } from './../../models/task.model';
   standalone: true,
   imports: [CommonModule, ReactiveFormsModule],
   templateUrl: './home.component.html',
-  styleUrls: ['./home.component.css'],
+  styleUrls: ['./home.component.css']
 })
 export class HomeComponent {
+
   tasks = signal<Task[]>([]);
   filter = signal<'all' | 'pending' | 'completed'>('all');
   tasksByFilter = computed(() => {
     const filter = this.filter();
     const tasks = this.tasks();
     if (filter === 'pending') {
-      return tasks.filter((task) => !task.completed);
+      return tasks.filter(task => !task.completed);
     }
     if (filter === 'completed') {
-      return tasks.filter((task) => task.completed);
+      return tasks.filter(task => task.completed);
     }
     return tasks;
-  });
+  })
 
   newTaskCtrl = new FormControl('', {
     nonNullable: true,
-    validators: [Validators.required],
+    validators: [  
+      Validators.required,
+    ]
   });
 
   injector = inject(Injector);
@@ -50,14 +46,10 @@ export class HomeComponent {
   }
 
   trackTasks() {
-    effect(
-      () => {
-        const tasks = this.tasks();
-        console.log(tasks);
-        localStorage.setItem('tasks', JSON.stringify(tasks));
-      },
-      { injector: this.injector }
-    );
+    effect(() => {
+      const tasks = this.tasks();
+      localStorage.setItem('tasks', JSON.stringify(tasks));
+    }, { injector: this.injector });
   }
 
   changeHandler() {
@@ -74,19 +66,16 @@ export class HomeComponent {
     const newTask = {
       id: Date.now(),
       title,
-      completed: false,
-    };
-    this.tasks.update((prevState) => [...prevState, newTask]);
+      completed: false
+    }
+    this.tasks.update(prevState => [...prevState, newTask]);
   }
-
+  
   deleteTask(index: number) {
-    this.tasks.update((state) => {
-      return state.filter((item, i) => i !== index);
-    });
+    this.tasks.update((tasks) => tasks.filter((task, position) => position !== index));
   }
 
   updateTask(index: number) {
-    /*
     this.tasks.update(prevState => {
       return prevState.map((task, position) => {
         if (position === index) {
@@ -98,47 +87,38 @@ export class HomeComponent {
         return task;
       })
     });
-    */
-    this.tasks.update((state) => {
-      const currentTask = state[index];
-      state[index] = {
-        ...currentTask,
-        completed: !currentTask.completed,
-      };
-      return state;
-    });
   }
 
   updateTaskEditingMode(index: number) {
-    this.tasks.update((prevState) => {
+    this.tasks.update(prevState => {
       return prevState.map((task, position) => {
         if (position === index) {
           return {
             ...task,
-            editing: true,
-          };
+            editing: true
+          }
         }
         return {
           ...task,
-          editing: false,
+          editing: false
         };
-      });
+      })
     });
   }
 
   updateTaskText(index: number, event: Event) {
     const input = event.target as HTMLInputElement;
-    this.tasks.update((prevState) => {
+    this.tasks.update(prevState => {
       return prevState.map((task, position) => {
         if (position === index) {
           return {
             ...task,
             title: input.value,
-            editing: false,
-          };
+            editing: false
+          }
         }
         return task;
-      });
+      })
     });
   }
 
@@ -146,3 +126,6 @@ export class HomeComponent {
     this.filter.set(filter);
   }
 }
+
+
+
