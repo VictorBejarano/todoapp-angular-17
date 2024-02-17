@@ -11,4 +11,6 @@ import { Component } from '@angular/core';
 export class LabsComponent {
   welcome = 'Hola!';
   tasks = ['Instalaer el angular CLI', 'Crear proyecto', 'Crear componentes'];
+  name = 'Victor';
+  age = 32;
 }
