@@ -6,7 +6,7 @@ import { CommonModule } from '@angular/common';
   standalone: true,
   imports: [CommonModule],
   templateUrl: './labs.component.html',
-  styleUrls: ['./labs.component.css']
+  styleUrls: ['./labs.component.css'],
 })
 export class LabsComponent {
   welcome = 'Bienvenido a mi primera aplicación con Angular';
@@ -22,13 +22,13 @@ export class LabsComponent {
   img = 'https://w3schools.com/howto/img_avatar.png';
 
   person = signal({
-    name: 'nicolas',
+    name: 'julian',
     age: 5,
-    avatar: 'https://w3schools.com/howto/img_avatar.png'
+    avatar: 'https://w3schools.com/howto/img_avatar.png',
   });
 
   clickHandler() {
-    alert('Hola')
+    alert('Hola');
   }
 
   changeHandler(event: Event) {
@@ -37,7 +37,7 @@ export class LabsComponent {
     this.name.set(newValue);
   }
 
-  keydownHandler(event: KeyboardEvent){
+  keydownHandler(event: KeyboardEvent) {
     const input = event.target as HTMLInputElement;
     console.log(input.value);
   }
@@ -45,11 +45,22 @@ export class LabsComponent {
   changeAge(event: Event) {
     const input = event.target as HTMLInputElement;
     const newValue = input.value;
-    this.person.update(prevState => {
+    this.person.update((prevState) => {
       return {
         ...prevState,
-        age: parseInt(newValue, 10)
-      }
+        age: parseInt(newValue, 10),
+      };
+    });
+  }
+
+  changeName(event: Event) {
+    const input = event.target as HTMLInputElement;
+    const newValue = input.value;
+    this.person.update((prevState) => {
+      return {
+        ...prevState,
+        name: newValue,
+      };
     });
   }
 }
